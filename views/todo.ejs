@@ -2,7 +2,7 @@
     <head>
         <title>Todo List</title>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-        <script src="./assets/todo-list.js"></script>
+        <!--<script src="assets/todo-list.js"></script>-->
         <!--<link href="./assets/styles.css" rel="stylesheet" type="text/css" />-->
         <style>
             body{
@@ -71,12 +71,47 @@
             }
             
             h1{
-                background: url(/assets/logo.png) no-repeat center;
                 margin-bottom: 0;
                 text-indent: -10000px;
             }
 
         </style>
+        <script>
+            $(document).ready(function(){
+            
+              $('form').on('submit', function(){
+            
+                  var item = $('form input');
+                  var todo = {item: item.val()};
+            
+                  $.ajax({
+                    type: 'POST',
+                    url: '/todo',
+                    data: todo,
+                    success: function(data){
+                      //do something with the data via front-end framework
+                      location.reload();
+                    }
+                  });
+            
+                  return false;
+            
+              });
+            
+              $('li').on('click', function(){
+                  var item = $(this).text().replace(/ /g, "-");
+                  $.ajax({
+                    type: 'DELETE',
+                    url: '/todo/' + item,
+                    success: function(data){
+                      //do something with the data via front-end framework
+                      location.reload();
+                    }
+                  });
+              });
+            
+            });
+        </script>
     </head>
     <body>
         <h1>My Todo List</h1>
